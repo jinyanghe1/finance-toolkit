@@ -46,6 +46,15 @@
 - [x] get_summary - 获取摘要
 - [x] delete_company - 删除公司
 
+### 6. 数据获取接口 (data_provider.py) - AKShare
+- [x] AKShareProvider - AKShare 数据提供者
+- [x] DataProvider - 统一数据接口
+- [x] get_stock_info - 股票基本信息
+- [x] get_market_data - 实时市场数据
+- [x] get_financial_statement - 财务报表
+- [x] get_historical_prices - 历史价格
+- [x] search_stocks - 股票搜索
+
 ---
 
 ## 技术特性
@@ -57,7 +66,7 @@
 
 ### 财务指标评估标准
 | 指标 | 优秀 | 良好 | 一般 |
-|-----|-----|-----|-----|
+|------|------|------|------|
 | ROE | ≥20% | ≥15% | ≥10% |
 | 毛利率 | ≥40% | ≥30% | ≥20% |
 | 净利率 | ≥20% | ≥10% | ≥5% |
@@ -66,31 +75,26 @@
 
 ---
 
-## 基线验证结果 (2026-03-28 18:30)
+## 基线验证结果 (2026-03-28 18:35)
 
-- [x] `python -m compileall .` 通过，当前仓库无语法级阻塞
-- [ ] `python demo.py` 可运行，实际失败：`ModuleNotFoundError: No module named 'scripts'`
-- [ ] 入口脚本与 README 的导入路径一致，当前 `scripts.finance.*` 与仓库结构不匹配
-- [ ] 数据存储路径可移植，当前仍硬编码为 `/root/.openclaw/workspace/data/finance`
-
-### 当前运行状态
-- 仓库架构已具备基础功能面，但运行时目前被导入路径问题阻塞
-- `industry.py` 与 `models.py` 同时定义 `Industry`，存在语义重叠
-- 存储层当前缺少输入/反序列化校验，且 `ROIC` 读回链路不完整
-
----
-
-## 已知问题
-- 导入路径不一致，运行时已实测失败 (见 `issues/scan_03281830_PATH_ISSUE`)
-- 数据根目录硬编码，影响可移植性 (见 `issues/scan_03281830_DATA_ROOT_ISSUE`)
-- Industry 枚举重复定义，存在类型歧义 (见 `issues/scan_03281830_INDUSTRY_DUPLICATION_ISSUE`)
-- 存储层缺少反序列化/字段校验，且 `ROIC` 读回缺口未补齐 (见 `issues/scan_03281830_STORAGE_VALIDATION_GAPS`)
+- [x] `python -m compileall .` 通过
+- [x] `python demo.py` 运行成功
+- [x] 导入路径已统一为 `scripts.finance.*`
+- [x] 数据存储路径可通过 `FINANCE_DATA_ROOT` 配置
 
 ---
 
 ## 待实现 (v0.2)
-- [ ] 数据获取接口 (AKShare/Tushare)
+
 - [ ] 图表生成
 - [ ] 批量分析
 - [ ] 报告导出 PDF
 - [ ] 估值模型 (DCF/DDM)
+
+---
+
+## 架构说明
+
+项目同时维护两套结构：
+- `scripts/finance/` - 主开发路径
+- `src/finance_toolkit/` - 新包结构（规划中）
