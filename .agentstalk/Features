@@ -88,15 +88,13 @@ finance-toolkit/
 - [x] examples/batch_analysis.py - 批量分析示例 ⭐ NEW
 
 ### 7. Agent SOP ⭐ NEW ⭐ NEW
-- [x] SOP.md - 标准操作流程文档
+- [x] SOP.md - Agent 完整操作指南
   - SOP-S1: 标准分析流程
   - SOP-S2: 深度研究流程
   - SOP-S3: 批量处理流程
+  - 扩展能力 (扩展点地图 + 模板)
   - 质量门禁 (Quality Gates)
-- [x] EXPLORATION.md - Agent 探索指南
-  - 扩展点地图
-  - 扩展案例参考
-  - 验证与测试规范
+  - 常见任务速查
 
 ---
 
