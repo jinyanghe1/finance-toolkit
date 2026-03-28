@@ -72,6 +72,30 @@ class Industry(Enum):
         self.cn_name = cn_name
         self.sector = sector
 
+    @classmethod
+    def from_cn_name(cls, cn_name: str) -> Optional["Industry"]:
+        """通过中文名称查找行业枚举"""
+        for item in cls:
+            if item.cn_name == cn_name:
+                return item
+        return None
+
+
+class SubIndustry(str, Enum):
+    """二级行业分类（细分领域）"""
+    # 金融
+    BANK = "银行"
+    INSURANCE = "保险"
+    SECURITIES = "证券"
+    # 科技
+    SEMICONDUCTOR = "半导体"
+    SOFTWARE = "软件"
+    ELECTRONICS = "电子"
+    # 消费
+    FOOD_BEVERAGE = "食品饮料"
+    RETAIL = "零售"
+    AUTOMOTIVE = "汽车"
+
 
 class IndustryChain:
     """产业链定义"""

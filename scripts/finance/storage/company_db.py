@@ -11,8 +11,8 @@ from datetime import datetime
 
 from scripts.finance.models import CompanyProfile, FinancialMetrics
 
-# 数据根目录
-DATA_ROOT = Path("/root/.openclaw/workspace/data/finance")
+# 数据根目录（可配置）
+DATA_ROOT = Path(os.environ.get("FINANCE_DATA_ROOT", Path.home() / ".local" / "share" / "finance"))
 
 class CompanyDB:
     """公司数据库管理器"""

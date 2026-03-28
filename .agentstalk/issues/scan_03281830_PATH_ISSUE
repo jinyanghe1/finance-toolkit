@@ -1,0 +1,49 @@
+# 扫描发现的问题
+
+## 时间: 03281830
+## Issue ID: scan_03281830_PATH_ISSUE
+
+### 问题1: 导入路径不一致
+**严重程度**: 阻塞 / 高
+**文件**:
+- company_analyzer.py:12-18
+- storage/company_db.py:12
+- demo.py:11-15
+
+**描述**:
+company_analyzer.py 使用 `sys.path.insert(0, str(Path(__file__).parent.parent))` 然后引用 `from scripts.finance.models`
+storage/company_db.py 直接使用 `from scripts.finance.models`
+
+但实际项目结构中不存在 `scripts/` 目录，文件直接在项目根目录。
+
+**影响**:
+- 代码无法直接运行
+- import 会失败
+
+**验证**:
+- `python -m compileall .` 通过，说明主要问题不是语法错误
+- `python demo.py` 实测失败，错误为 `ModuleNotFoundError: No module named 'scripts'`
+- README 的快速开始示例同样使用 `from scripts.finance.company_analyzer import CompanyAnalyzer`，因此文档与仓库布局一起失配
+
+**建议修复**:
+统一使用相对导入或调整项目结构
+
+---
+
+### 问题2: Industry 重复定义
+**严重程度**: 中
+**文件**:
+- models.py:11-22
+- industry.py:9-74
+
+**描述**:
+两个文件都定义了 Industry 枚举，内容略有不同：
+- models.py: Industry 是简单字符串枚举
+- industry.py: Industry 包含 cn_name 和 sector 属性
+
+**影响**:
+- 使用时可能混淆
+- industry.py 的 CompanyDB 会使用 models.py 的 Industry
+
+**建议**:
+统一 Industry 定义，保留 industry.py 的完整版本

@@ -8,33 +8,25 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 
-class Industry(str, Enum):
-    """一级行业分类"""
-    FINANCE = "金融"
-    REAL_ESTATE = "房地产"
-    MANUFACTURING = "制造业"
-    TECHNOLOGY = "科技"
-    HEALTHCARE = "医药健康"
-    CONSUMER = "消费"
-    ENERGY = "能源"
-    MATERIALS = "材料"
-    TELECOM = "电信"
-    UTILITIES = "公用事业"
+# 从 industry.py 导入 Industry 定义（避免重复定义）
+from scripts.finance.industry import Industry
 
-class SubIndustry(str, Enum):
-    """二级行业分类（示例）"""
-    # 金融
-    BANK = "银行"
-    INSURANCE = "保险"
-    SECURITIES = "证券"
-    # 科技
-    SEMICONDUCTOR = "半导体"
-    SOFTWARE = "软件"
-    ELECTRONICS = "电子"
-    # 消费
-    FOOD_BEVERAGE = "食品饮料"
-    RETAIL = "零售"
-    AUTOMOTIVE = "汽车"
+# SubIndustry 也从 industry.py 导出（保持向后兼容）
+try:
+    from scripts.finance.industry import SubIndustry
+except ImportError:
+    # 如果 industry.py 没有 SubIndustry，使用简单的字符串枚举
+    class SubIndustry(str, Enum):
+        """二级行业分类"""
+        BANK = "银行"
+        INSURANCE = "保险"
+        SECURITIES = "证券"
+        SEMICONDUCTOR = "半导体"
+        SOFTWARE = "软件"
+        ELECTRONICS = "电子"
+        FOOD_BEVERAGE = "食品饮料"
+        RETAIL = "零售"
+        AUTOMOTIVE = "汽车"
 
 @dataclass
 class StockInfo:
@@ -127,7 +119,7 @@ class CompanyProfile:
             established_date=data.get("established_date"),
             business_scope=data.get("business_scope", ""),
             main_products=data.get("main_products", []),
-            industry=Industry(data["industry"]) if data.get("industry") else None,
+            industry=Industry.from_cn_name(data["industry"]) if data.get("industry") else None,
             sub_industry=SubIndustry(data["sub_industry"]) if data.get("sub_industry") else None,
             website=data.get("website"),
             address=data.get("address"),

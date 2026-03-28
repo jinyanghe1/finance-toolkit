@@ -1,0 +1,36 @@
+# 仓库扫描进度
+
+## 时间: 03281830
+## Agent: main-scanner
+
+### 扫描范围
+- [x] 项目结构
+- [x] 核心代码文件
+- [x] .gitignore 配置
+
+### 项目概况
+- **项目名称**: Finance Toolkit - 金融功能库
+- **版本状态**: v0.1 开发中 - 核心框架已完成
+- **文件总数**: 7 个源文件 + 1 个 README
+
+### 文件清单
+```
+/finance-toolkit/
+├── models.py                    # 数据模型定义
+├── company_analyzer.py         # 公司分析主入口
+├── industry.py                 # 行业分类体系
+├── demo.py                     # 演示文件
+├── analyzers/
+│   └── financial_metrics.py    # 财务指标计算
+├── storage/
+│   └── company_db.py           # 公司数据库管理
+└── README.md
+```
+
+### 发现的问题
+1. **路径引用错误**: company_analyzer.py 和 storage/company_db.py 使用 `from scripts.finance.models` 引用，但实际路径不匹配
+2. **重复定义**: industry.py 和 models.py 都定义了 Industry 枚举
+3. **导入路径不一致**: 部分文件使用 `sys.path.insert` 调整路径
+
+### 待处理
+- 见 .agentstalk/issues/scan_03281830_PATH_ISSUE

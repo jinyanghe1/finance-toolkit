@@ -9,6 +9,49 @@
 - **行业分类体系** - 申万/中信标准行业分类
 - **分析报告生成** - 标准化Markdown投研报告
 
+## MCP 配置
+
+本项目支持通过 MCP (Model Context Protocol) 协议访问。以下是常用 MCP 服务器配置：
+
+### Claude Code 集成
+
+在 `~/.claude/settings.json` 中添加：
+
+```json
+{
+  "mcpServers": {
+    "finance-toolkit": {
+      "command": "python",
+      "args": ["-m", "scripts.finance.mcp_server"]
+    }
+  }
+}
+```
+
+### Claude Desktop 集成
+
+在 `~/.claude/resources/mcp_servers.json` 中添加：
+
+```json
+{
+  "finance-toolkit": {
+    "command": "python",
+    "args": ["-m", "scripts.finance.mcp_server"],
+    "env": {
+      "FINANCE_DATA_ROOT": "~/.local/share/finance"
+    }
+  }
+}
+```
+
+### 环境变量
+
+| 变量 | 说明 | 默认值 |
+|-----|------|-------|
+| `FINANCE_DATA_ROOT` | 数据存储根目录 | `~/.local/share/finance` |
+
+---
+
 ## 快速开始
 
 ```python

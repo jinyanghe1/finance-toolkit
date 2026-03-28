@@ -1,0 +1,26 @@
+# Finance Toolkit 默认配置
+
+# 数据存储配置
+data:
+  root_path: ~/.finance_toolkit/data
+  company_dir: company
+  export_dir: exports
+
+# 日志配置
+logging:
+  level: INFO
+  console: true
+  file: null  # 设置为文件路径则启用文件日志，如: ~/.finance_toolkit/logs/app.log
+
+# 分析配置
+analysis:
+  default_metrics_years: 5
+  peers_compare_limit: 10
+  trend_analysis_periods: 4
+
+# 估值配置
+valuation:
+  risk_free_rate: 0.03      # 无风险利率 (3%)
+  market_risk_premium: 0.06 # 市场风险溢价 (6%)
+  terminal_growth_rate: 0.03 # 永续增长率 (3%)
+  forecast_years: 5         # 预测年数
