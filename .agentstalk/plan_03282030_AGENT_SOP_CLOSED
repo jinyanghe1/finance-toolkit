@@ -1,0 +1,62 @@
+# Agent SOP 设计计划
+
+## 时间: 03282030
+## Plan ID: plan_03282030_AGENT_SOP
+## 状态: CLOSED
+
+## 目标
+
+创建一套 **SOP (Standard Operating Procedure)** 规范，使 AI Agents 能够：
+1. **稳定地**执行标准金融分析任务
+2. **自由地**探索和扩展工具链功能
+
+---
+
+## 完成内容
+
+### Phase 1: SOP 文档 ✅
+- [x] 创建 `SOP.md` - 核心 SOP 规范
+  - [x] SOP-S1: 标准分析流程
+  - [x] SOP-S2: 深度研究流程
+  - [x] SOP-S3: 批量处理流程
+  - [x] 质量门禁 (Quality Gates)
+  - [x] 代码模板
+
+### Phase 2: 探索指南 ✅
+- [x] 创建 `EXPLORATION.md` - 探索指南
+  - [x] 扩展点地图
+  - [x] 扩展指南 (数据源/分析方法/报告格式/估值模型)
+  - [x] 验证与测试规范
+  - [x] 案例参考
+
+### Phase 3: 集成 ✅
+- [x] 更新 `AGENTS.md` 引用 SOP
+- [x] 更新 `Features` 功能基线
+
+---
+
+## 文档结构
+
+```
+SOP.md           - 标准操作流程 (稳定区)
+EXPLORATION.md   - 探索指南 (创新区)
+AGENTS.md        - 整合入口
+```
+
+## 关键设计
+
+### 稳定核心 (SOP)
+- SOP-S1: 单公司标准分析
+- SOP-S2: 深度投资研究
+- SOP-S3: 批量处理
+- 质量门禁确保输出可靠性
+
+### 创新空间 (Exploration)
+- 清晰的扩展点标识
+- 向导式扩展指南
+- 验证确保不破坏现有功能
+
+---
+
+## 提交
+- Commit: `239fded` - feat: 添加 Agent SOP 文档体系
