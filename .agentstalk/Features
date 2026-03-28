@@ -65,6 +65,7 @@ finance-toolkit/
 - [x] TrendAnalyzer - 趋势分析
 - [x] DCFValuation - DCF 估值
 - [x] RelativeValuation - 相对估值
+- [x] CompanyAnalyzer.analyze_batch - 批量分析多家公司 ⭐ NEW
 
 ### 4. 行业模块
 - [x] Industry 枚举 - 申万/中信标准
@@ -74,6 +75,7 @@ finance-toolkit/
 
 ### 5. 用户界面
 - [x] CLI 工具 (click)
+- [x] `ftk batch analyze` - 批量分析命令，支持参数/txt/csv 输入与 json/yaml 输出 ⭐ NEW
 - [x] ReportGenerator - Markdown 报告
 - [x] PDFReportGenerator - PDF 报告导出 ⭐ NEW
 - [x] 便捷函数
@@ -83,6 +85,18 @@ finance-toolkit/
 - [x] AGENTS.md - AI Agent 开发者指南
 - [x] examples/basic_usage.py - 基础示例
 - [x] examples/agent_workflow.py - Agent 工作流
+- [x] examples/batch_analysis.py - 批量分析示例 ⭐ NEW
+
+### 7. Agent SOP ⭐ NEW ⭐ NEW
+- [x] SOP.md - 标准操作流程文档
+  - SOP-S1: 标准分析流程
+  - SOP-S2: 深度研究流程
+  - SOP-S3: 批量处理流程
+  - 质量门禁 (Quality Gates)
+- [x] EXPLORATION.md - Agent 探索指南
+  - 扩展点地图
+  - 扩展案例参考
+  - 验证与测试规范
 
 ---
 
@@ -98,8 +112,10 @@ finance-toolkit/
 
 - [x] `pip install -e .` 安装成功
 - [x] `python -m finance_toolkit --help` 正常
+- [x] `python -m finance_toolkit batch analyze --help` 正常
 - [x] 导入测试通过
 - [x] CLI 命令测试通过
+- [x] `pytest -q` 通过（22 passed）
 - [x] 文档完整性检查
 
 ---
@@ -117,4 +133,4 @@ finance-toolkit/
 
 ---
 
-**最后更新**: 2026-03-28 19:00
+**最后更新**: 2026-03-28 19:05

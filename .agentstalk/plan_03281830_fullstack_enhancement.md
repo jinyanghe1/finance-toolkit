@@ -18,6 +18,12 @@
 > - 当前分支/远端已同步，准备在此基础上开发批量分析功能。
 > - 图表功能由 `progress_03281910_CHARTS_KIMI.md` 跟进，批量分析避免修改 `report/charts.py` 或图表示例。
 > - 批量分析优先落在 `src/finance_toolkit/analyzer/company.py` 与 `src/finance_toolkit/cli.py`，并补充 tests/examples。
+>
+> 批量分析完成: 2026-03-28 19:05
+>
+> - 已实现 `CompanyAnalyzer.analyze_batch()` 与 CLI `ftk batch analyze`。
+> - 已补充 `tests/test_batch_analysis.py`、`examples/batch_analysis.py`、README/AGENTS/Features。
+> - 已验证 `pytest -q`（22 passed）以及 batch CLI 帮助命令。
 
 ---
 
@@ -53,7 +59,7 @@
 - [ ] 3.3 实现杜邦分析模型 (ROE 分解)
 - [ ] 3.4 添加趋势分析 (同比/环比计算)
 - [ ] 3.5 添加财务健康评分系统
-- [ ] 3.6 实现批量分析多家公司（API + CLI + 示例）
+- [x] 3.6 实现批量分析多家公司（API + CLI + 示例）
 
 ### Phase 4: 估值模型 ⏳
 **时间**: Day 3 上午 (4h)  
@@ -80,7 +86,7 @@
 
 - [ ] 6.1 完善 API 文档 (docstring)
 - [ ] 6.2 编写用户指南
-- [ ] 6.3 更新 README.md
+- [x] 6.3 更新 README.md
 - [ ] 6.4 添加 CHANGELOG.md
 
 ---

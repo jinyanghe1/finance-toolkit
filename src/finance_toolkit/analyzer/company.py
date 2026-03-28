@@ -256,6 +256,52 @@ class CompanyAnalyzer(LogMixin):
             匹配的公司列表
         """
         return self.db.search(keyword)
+
+    def analyze_batch(
+        self,
+        codes: List[str],
+        skip_errors: bool = True,
+    ) -> Dict[str, Dict[str, Any]]:
+        """
+        批量分析多家公司。
+
+        Args:
+            codes: 股票代码列表
+            skip_errors: 遇到错误时是否继续处理后续公司
+
+        Returns:
+            以输入代码为键的结构化结果字典
+        """
+        normalized_codes = list(
+            dict.fromkeys(code.strip() for code in codes if code and code.strip())
+        )
+        if not normalized_codes:
+            return {}
+
+        results: Dict[str, Dict[str, Any]] = {}
+        for requested_code in normalized_codes:
+            try:
+                summary = self.get_financial_summary(requested_code)
+                company_info = summary.get("公司信息", {})
+                results[requested_code] = {
+                    "success": True,
+                    "requested_code": requested_code,
+                    "code": company_info.get("代码", requested_code),
+                    "name": company_info.get("名称"),
+                    "industry": company_info.get("行业"),
+                    "summary": summary,
+                }
+            except Exception as exc:
+                if not skip_errors:
+                    raise
+                results[requested_code] = {
+                    "success": False,
+                    "requested_code": requested_code,
+                    "code": requested_code,
+                    "error": f"{exc.__class__.__name__}: {exc}",
+                }
+
+        return results
     
     def generate_report(self, code: str, include_trend: bool = True) -> str:
         """
@@ -389,3 +435,13 @@ def list_companies(db: Optional[CompanyDB] = None) -> List[Dict[str, Any]]:
     """列出所有公司"""
     analyzer = CompanyAnalyzer(db)
     return analyzer.list_all_companies()
+
+
+def batch_analyze(
+    codes: List[str],
+    db: Optional[CompanyDB] = None,
+    skip_errors: bool = True,
+) -> Dict[str, Dict[str, Any]]:
+    """快速批量分析公司。"""
+    analyzer = CompanyAnalyzer(db)
+    return analyzer.analyze_batch(codes, skip_errors=skip_errors)

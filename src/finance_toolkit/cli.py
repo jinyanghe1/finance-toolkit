@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from pathlib import Path
@@ -15,16 +16,45 @@ from .config import get_config
 from .analyzer.company import CompanyAnalyzer
 
 
+def _format_payload(payload: dict[str, Any], output_format: str) -> str:
+    """Format a payload for stdout or file output."""
+    if output_format == "json":
+        return json.dumps(payload, ensure_ascii=False, indent=2)
+
+    return yaml.safe_dump(payload, allow_unicode=True, sort_keys=False)
+
+
 def _emit_payload(payload: dict[str, Any], output_format: str) -> None:
     """Emit a payload in the requested format."""
-    if output_format == "json":
-        click.echo(json.dumps(payload, ensure_ascii=False, indent=2))
-        return
+    click.echo(_format_payload(payload, output_format), nl=False)
 
-    click.echo(
-        yaml.safe_dump(payload, allow_unicode=True, sort_keys=False),
-        nl=False,
-    )
+
+def _load_codes_from_input(input_path: Path, code_column: str) -> list[str]:
+    """Load stock codes from a plain text file or CSV."""
+    if input_path.suffix.lower() == ".csv":
+        with input_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            fieldnames = reader.fieldnames or []
+            if code_column not in fieldnames:
+                raise click.ClickException(f"CSV 文件缺少代码列: {code_column}")
+
+            return [
+                row[code_column].strip()
+                for row in reader
+                if row.get(code_column, "").strip()
+            ]
+
+    return [
+        line.strip()
+        for line in input_path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+
+
+def _write_payload(payload: dict[str, Any], output_format: str, output_path: Path) -> None:
+    """Write a formatted payload to a file."""
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(_format_payload(payload, output_format), encoding="utf-8")
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -125,6 +155,89 @@ def analyze_company(code: str, output: Optional[str], fmt: str):
     except Exception as e:
         click.echo(f"❌ 分析失败: {e}", err=True)
         sys.exit(1)
+
+
+@main.group("batch")
+def batch_group() -> None:
+    """批量处理多家公司。"""
+
+
+@batch_group.command("analyze")
+@click.argument("codes", nargs=-1, required=False)
+@click.option(
+    "--input",
+    "input_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="输入文件，支持 txt(每行一个代码) 或 csv。",
+)
+@click.option(
+    "--code-column",
+    default="code",
+    show_default=True,
+    help="CSV 文件中的股票代码列名。",
+)
+@click.option(
+    "--skip-errors/--fail-fast",
+    default=True,
+    show_default=True,
+    help="遇到错误时继续处理，或在首个错误时立即失败。",
+)
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["json", "yaml"], case_sensitive=False),
+    default="json",
+    show_default=True,
+)
+@click.option(
+    "--output",
+    "output_path",
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="将结果写入文件；默认输出到终端。",
+)
+def batch_analyze_command(
+    codes: tuple[str, ...],
+    input_path: Optional[Path],
+    code_column: str,
+    skip_errors: bool,
+    output_format: str,
+    output_path: Optional[Path],
+) -> None:
+    """批量分析多家公司并输出结构化结果。"""
+    all_codes = [code.strip() for code in codes if code.strip()]
+
+    if input_path is not None:
+        all_codes.extend(_load_codes_from_input(input_path, code_column))
+
+    if not all_codes:
+        raise click.ClickException("请提供股票代码参数，或通过 --input 指定输入文件。")
+
+    analyzer = CompanyAnalyzer()
+    results = analyzer.analyze_batch(all_codes, skip_errors=skip_errors)
+
+    success_count = sum(1 for item in results.values() if item["success"])
+    failed_count = len(results) - success_count
+    payload = {
+        "input": {
+            "requested": len(all_codes),
+            "unique": len(results),
+            "input_file": str(input_path) if input_path else None,
+        },
+        "results": results,
+        "summary": {
+            "success_count": success_count,
+            "failed_count": failed_count,
+            "success_rate": round(success_count / len(results), 4) if results else 0.0,
+        },
+    }
+
+    normalized_format = output_format.lower()
+    if output_path is not None:
+        _write_payload(payload, normalized_format, output_path)
+        click.echo(f"已写入: {output_path}")
+        return
+
+    _emit_payload(payload, normalized_format)
 
 
 @main.command("chart")

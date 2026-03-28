@@ -10,6 +10,7 @@ from .metrics import (
 from .company import (
     CompanyAnalyzer,
     analyze_company,
+    batch_analyze,
     get_company_summary,
     list_companies,
 )
@@ -41,6 +42,7 @@ __all__ = [
     # Company
     "CompanyAnalyzer",
     "analyze_company",
+    "batch_analyze",
     "get_company_summary",
     "list_companies",
     # Dupont

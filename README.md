@@ -59,14 +59,9 @@ from finance_toolkit import CompanyAnalyzer
 analyzer = CompanyAnalyzer()
 companies = ["600519", "000858", "000568"]  # 茅台、五粮液、泸州老窖
 
-for code in companies:
-    try:
-        report = analyzer.generate_report(code)
-        # Agent可以提取报告中的关键指标进行比较
-        print(f"完成分析: {code}")
-    except Exception as e:
-        # 异常处理让Agent更健壮
-        print(f"分析失败 {code}: {e}")
+results = analyzer.analyze_batch(companies)
+successful = {code: result for code, result in results.items() if result["success"]}
+print(f"成功分析: {len(successful)}/{len(companies)} 家")
 ```
 
 ---
@@ -119,6 +114,10 @@ ftk list
 # 分析公司
 ftk analyze 600519
 
+# 批量分析
+ftk batch analyze 600519 000858 000568 --format json
+ftk batch analyze --input codes.txt --output batch-results.yaml --format yaml
+
 # 搜索公司
 ftk search 茅台
 
@@ -160,6 +159,10 @@ analyzer.update_market_data(
 # 生成分析报告
 report = analyzer.generate_report("600519")
 print(report)
+
+# 批量分析
+results = analyzer.analyze_batch(["600519", "000858", "000568"])
+print(results["600519"]["summary"]["公司信息"]["名称"])
 ```
 
 ### 高级用法：估值分析

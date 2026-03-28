@@ -6,12 +6,36 @@
 
 ## 📋 目录
 
-1. [Agent 快速入门](#agent-快速入门)
-2. [核心使用模式](#核心使用模式)
-3. [数据结构说明](#数据结构说明)
-4. [错误处理指南](#错误处理指南)
-5. [多 Agent 协作规范](#多-agent-协作规范)
-6. [扩展开发指南](#扩展开发指南)
+1. [快速开始 - 阅读 SOP](#快速开始--阅读-sop)
+2. [Agent 快速入门](#agent-快速入门)
+3. [核心使用模式](#核心使用模式)
+4. [数据结构说明](#数据结构说明)
+5. [错误处理指南](#错误处理指南)
+6. [多 Agent 协作规范](#多-agent-协作规范)
+7. [扩展开发指南](#扩展开发指南)
+
+---
+
+## 快速开始 - 阅读 SOP
+
+**首次使用本工具的 Agent，请先阅读:**
+
+| 文档 | 用途 | 必读 |
+|-----|------|------|
+| [SOP.md](./SOP.md) | 标准操作流程，稳定执行框架 | ✅ 必读 |
+| [EXPLORATION.md](./EXPLORATION.md) | 探索指南，创新扩展空间 | 推荐阅读 |
+
+### SOP 速查
+
+```python
+# 标准分析流程 (SOP-S1)
+from finance_toolkit import CompanyAnalyzer
+analyzer = CompanyAnalyzer()
+report = analyzer.generate_report("600519")
+
+# 批量处理 (SOP-S3)
+analyzer.analyze_batch(["600519", "000858"], output="results.json")
+```
 
 ---
 
@@ -61,44 +85,29 @@ except Exception as e:
 
 ```python
 from finance_toolkit import CompanyAnalyzer
-from typing import List, Dict
 
 analyzer = CompanyAnalyzer()
 
-def batch_analyze(codes: List[str]) -> Dict[str, dict]:
-    """
-    批量分析公司，返回结构化结果
-    
-    Args:
-        codes: 股票代码列表
-    
-    Returns:
-        {代码: 分析结果} 的字典
-    """
-    results = {}
-    
-    for code in codes:
-        try:
-            summary = analyzer.get_financial_summary(code)
-            results[code] = {
-                "success": True,
-                "data": summary,
-            }
-        except Exception as e:
-            results[code] = {
-                "success": False,
-                "error": str(e),
-            }
-    
-    return results
-
 # 使用示例
 codes = ["600519", "000858", "000568"]  # 白酒三巨头
-results = batch_analyze(codes)
+results = analyzer.analyze_batch(codes)
 
 # 筛选出分析成功的
 successful = {k: v for k, v in results.items() if v["success"]}
 print(f"成功分析: {len(successful)}/{len(codes)} 家")
+```
+
+### 模式1b: 使用 CLI 进行批量分析
+
+```bash
+# 直接传入代码
+ftk batch analyze 600519 000858 000568 --format json
+
+# 从文本文件读取
+ftk batch analyze --input stocks.txt --format yaml
+
+# 从 CSV 读取指定列
+ftk batch analyze --input companies.csv --code-column code --format json
 ```
 
 ### 模式2: 比较多家公司
@@ -378,6 +387,9 @@ from finance_toolkit.industry import Industry, get_industry_by_name
 # 查看帮助
 ftk --help
 
+# 批量分析
+ftk batch analyze 600519 000858 000568 --format json
+
 # 列出现有公司
 ftk list
 
@@ -403,7 +415,7 @@ results = search_stocks("茅台")
 ```
 
 **Q: 如何批量获取多家公司的数据？**
-使用循环 + try/except 包裹，参见上方的"批量分析"模式。
+优先使用内置 `CompanyAnalyzer.analyze_batch()` 或 `ftk batch analyze`，参见上方的"批量分析"模式。
 
 **Q: 数据存储在哪里？**
 默认在 `~/.finance_toolkit/data/`，可通过环境变量 `FINANCE_DATA_ROOT` 修改。
