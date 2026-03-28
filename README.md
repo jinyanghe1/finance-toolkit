@@ -9,53 +9,28 @@
 - **行业分类体系** - 申万/中信标准行业分类
 - **分析报告生成** - 标准化Markdown投研报告
 
-## MCP 配置
+## CLI 使用
 
-本项目支持通过 MCP (Model Context Protocol) 协议访问。以下是常用 MCP 服务器配置：
+安装可编辑包后，可以直接使用 CLI：
 
-### Claude Code 集成
-
-在 `~/.claude/settings.json` 中添加：
-
-```json
-{
-  "mcpServers": {
-    "finance-toolkit": {
-      "command": "python",
-      "args": ["-m", "scripts.finance.mcp_server"]
-    }
-  }
-}
-```
-
-### Claude Desktop 集成
-
-在 `~/.claude/resources/mcp_servers.json` 中添加：
-
-```json
-{
-  "finance-toolkit": {
-    "command": "python",
-    "args": ["-m", "scripts.finance.mcp_server"],
-    "env": {
-      "FINANCE_DATA_ROOT": "~/.local/share/finance"
-    }
-  }
-}
+```bash
+pip install -e .
+ftk --help
+python -m finance_toolkit --help
 ```
 
 ### 环境变量
 
 | 变量 | 说明 | 默认值 |
 |-----|------|-------|
-| `FINANCE_DATA_ROOT` | 数据存储根目录 | `~/.local/share/finance` |
+| `FINANCE_DATA_ROOT` | 数据存储根目录，优先级高于 `config.yaml` | `~/.finance_toolkit/data` |
 
 ---
 
 ## 快速开始
 
 ```python
-from scripts.finance.company_analyzer import CompanyAnalyzer
+from finance_toolkit import CompanyAnalyzer
 
 analyzer = CompanyAnalyzer()
 
@@ -83,14 +58,31 @@ print(report)
 ## 项目结构
 
 ```
-/scripts/finance/
+src/finance_toolkit/
+├── __init__.py            # 包入口
+├── __version__.py        # 版本信息
 ├── models.py              # 数据模型定义
-├── company_analyzer.py    # 公司分析主入口
-├── industry.py            # 行业分类体系
-├── storage/company_db.py  # 公司数据库管理
-└── analyzers/financial_metrics.py  # 财务指标计算
+├── config.py              # 配置管理
+├── logger.py              # 日志模块
+├── exceptions.py          # 异常定义
+├── cli.py                 # CLI 入口
+├── analyzer/
+│   ├── company.py         # 公司分析
+│   ├── metrics.py         # 财务指标
+│   ├── dupont.py          # 杜邦分析
+│   ├── valuation.py       # 估值模型
+│   └── trend.py           # 趋势分析
+├── data/
+│   ├── db.py              # 数据库管理
+│   ├── akshare.py         # AKShare 数据接口
+│   └── importer.py        # 数据导入
+├── industry/
+│   ├── classification.py   # 行业分类
+│   └── chain.py           # 产业链
+└── report/
+    └── generator.py       # 报告生成
 
-/data/finance/company/{code}/
+~/.finance_toolkit/data/company/{code}/
 ├── profile.json           # 公司档案
 └── metrics.json           # 财务指标历史
 ```

@@ -1,0 +1,54 @@
+# 架构整合计划
+
+## 时间: 03281900
+## Plan ID: plan_03281900_STRUCTURE_CONSOLIDATION
+
+## 背景
+
+当前项目存在两套结构：
+- `scripts/finance/` - 主开发路径（已修复，v0.1 基础功能）
+- `src/finance_toolkit/` - 新包结构（其他 agent 创建，包含高级功能）
+
+## 目标
+
+整合为统一的项目结构，以 `src/finance_toolkit/` 为正式包结构。
+
+## 整合方案
+
+### 第一阶段：清理与迁移
+
+1. **保留 `scripts/finance/` 中的核心文件**：
+   - `models.py` → `src/finance_toolkit/models.py`
+   - `company_analyzer.py` → `src/finance_toolkit/analyzer/company.py`
+   - `industry.py` → `src/finance_toolkit/industry/`
+   - `data_provider.py` → `src/finance_toolkit/data/akshare.py`
+   - `storage/company_db.py` → `src/finance_toolkit/data/db.py`
+   - `analyzers/financial_metrics.py` → `src/finance_toolkit/analyzer/metrics.py`
+
+2. **保留 `src/finance_toolkit/` 中已创建的文件**：
+   - `analyzer/dupont.py` - 杜邦分析
+   - `analyzer/valuation.py` - 估值模型
+   - `analyzer/metrics.py` - 指标计算（需与 financial_metrics.py 合并）
+   - `config.py`, `logger.py`, `exceptions.py` - 基础设施
+
+3. **删除冗余**：
+   - `scripts/finance/` 整体迁移后删除
+   - 合并重复的 metrics 计算逻辑
+
+### 第二阶段：更新导入路径
+
+- 更新所有 `from scripts.finance.*` 为 `from finance_toolkit.*`
+- 更新 `demo.py` 和其他入口文件
+- 更新 README 中的示例代码
+
+### 第三阶段：验证
+
+- `python -m compileall .`
+- `python demo.py`
+- CLI 测试
+
+## 待处理
+
+- [ ] 创建合并后的 `__init__.py`
+- [ ] 更新 `pyproject.toml` 确保包结构正确
+- [ ] 更新 README

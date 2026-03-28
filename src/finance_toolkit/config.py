@@ -51,6 +51,9 @@ class DataConfig:
     @property
     def root(self) -> Path:
         """获取数据根目录路径"""
+        env_root = os.environ.get("FINANCE_DATA_ROOT")
+        if env_root:
+            return Path(env_root).expanduser()
         return Path(self.root_path).expanduser()
     
     @property

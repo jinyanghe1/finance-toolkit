@@ -1,21 +1,14 @@
 #!/usr/bin/env python3
 """
-金融功能库 - 快速示例
-演示如何使用公司分析工具
+Finance Toolkit - 基础使用示例
 """
-
-import sys
-from pathlib import Path
-
-# 添加 src 到路径
-sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from finance_toolkit import CompanyAnalyzer
 from finance_toolkit.analyzer.metrics import FinancialStatement
 
 
 def demo_create_company():
-    """演示：创建公司档案"""
+    """示例：创建公司档案"""
     print("=" * 60)
     print("示例1：创建公司档案")
     print("=" * 60)
@@ -31,7 +24,7 @@ def demo_create_company():
         main_products=["飞天茅台", "茅台系列酒"],
     )
     
-    # 更新市场数据（实际中可通过kimi_finance获取）
+    # 更新市场数据
     analyzer.update_market_data(
         code="600519",
         market_cap=21000,  # 亿元
@@ -40,11 +33,12 @@ def demo_create_company():
         dividend_yield=1.5,
     )
     
-    print("\n")
+    print(f"✅ 创建公司: {profile.stock.name} ({profile.stock.code})")
+    print()
 
 
 def demo_add_financials():
-    """演示：添加财务数据"""
+    """示例：添加财务数据"""
     print("=" * 60)
     print("示例2：添加财务报表并计算指标")
     print("=" * 60)
@@ -78,11 +72,11 @@ def demo_add_financials():
     
     analyzer.add_financial_statement("600519", statement_2023, "2023-12-31")
     
-    print("\n")
+    print()
 
 
 def demo_view_summary():
-    """演示：查看公司摘要"""
+    """示例：查看公司摘要"""
     print("=" * 60)
     print("示例3：查看公司财务摘要")
     print("=" * 60)
@@ -99,11 +93,11 @@ def demo_view_summary():
         else:
             print(f"  {data}")
     
-    print("\n")
+    print()
 
 
 def demo_generate_report():
-    """演示：生成分析报告"""
+    """示例：生成分析报告"""
     print("=" * 60)
     print("示例4：生成分析报告")
     print("=" * 60)
@@ -114,7 +108,7 @@ def demo_generate_report():
 
 
 def demo_list_companies():
-    """演示：列出所有公司"""
+    """示例：列出所有公司"""
     print("=" * 60)
     print("示例5：列出所有已存储的公司")
     print("=" * 60)
@@ -131,7 +125,7 @@ def demo_list_companies():
 
 if __name__ == "__main__":
     print("\n" + "=" * 60)
-    print("金融功能库 - 快速示例")
+    print("Finance Toolkit - 基础使用示例")
     print("=" * 60 + "\n")
     
     # 运行示例

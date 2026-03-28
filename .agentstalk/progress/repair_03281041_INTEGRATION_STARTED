@@ -1,0 +1,23 @@
+# 集成进度
+
+## 时间: 03281041
+## Agent: main-agent
+## 状态: OPEN
+
+### 当前目标
+- 整合并发产生的 `src/finance_toolkit` 与 `tests/` 变更
+- 避免重复开发 analyzer / industry / report 已存在模块
+- 以接口打通、编译修复、验证和基线同步为主
+
+### 已确认
+- `pip install -e .` 正常
+- `ftk --help` 正常
+- `python -m finance_toolkit --help` 正常
+- `demo.py` 正常
+
+### 待整合区域
+- `src/finance_toolkit/analyzer/*.py`
+- `src/finance_toolkit/industry/*.py`
+- `src/finance_toolkit/report/generator.py`
+- `tests/conftest.py`
+- `tests/test_models.py`

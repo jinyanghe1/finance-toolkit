@@ -8,27 +8,12 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from enum import Enum
 
+from .industry.classification import (
+    INDUSTRY_BENCHMARKS as BENCHMARKS,
+    Industry,
+    get_industry_benchmark,
+)
 from .logger import LogMixin
-
-
-class Industry(str, Enum):
-    """一级行业分类 (申万/中信标准)"""
-    # 金融
-    FINANCE = "金融"
-    REAL_ESTATE = "房地产"
-    MANUFACTURING = "制造业"
-    TECHNOLOGY = "科技"
-    HEALTHCARE = "医药健康"
-    CONSUMER = "消费"
-    ENERGY = "能源"
-    MATERIALS = "材料"
-    TELECOM = "电信"
-    UTILITIES = "公用事业"
-    TRANSPORTATION = "交通运输"
-    MEDIA = "传媒"
-    AGRICULTURE = "农林牧渔"
-    CONSTRUCTION = "建筑"
-    ENVIRONMENTAL = "环保"
 
 
 class SubIndustry(str, Enum):
@@ -384,36 +369,6 @@ class FinancialMetrics:
         }
 
 
-# 财务指标参考值 (分行业)
-BENCHMARKS = {
-    "default": {
-        "roe": {"excellent": 20, "good": 15, "average": 10},
-        "gross_margin": {"excellent": 40, "good": 30, "average": 20},
-        "net_margin": {"excellent": 20, "good": 10, "average": 5},
-        "debt_to_asset": {"safe": 50, "warning": 70, "danger": 80},
-        "current_ratio": {"safe": 2.0, "warning": 1.5, "danger": 1.0},
-        "quick_ratio": {"safe": 1.5, "warning": 1.0, "danger": 0.8},
-    },
-    Industry.BANK: {
-        "roe": {"excellent": 15, "good": 12, "average": 8},
-        "net_margin": {"excellent": 40, "good": 30, "average": 20},
-        "debt_to_asset": {"safe": 92, "warning": 95, "danger": 97},
-    },
-    Industry.TECHNOLOGY: {
-        "roe": {"excellent": 15, "good": 10, "average": 5},
-        "gross_margin": {"excellent": 60, "good": 45, "average": 30},
-    },
-    Industry.CONSUMER: {
-        "roe": {"excellent": 20, "good": 15, "average": 10},
-        "gross_margin": {"excellent": 50, "good": 35, "average": 20},
-    },
-    Industry.HEALTHCARE: {
-        "roe": {"excellent": 18, "good": 12, "average": 8},
-        "gross_margin": {"excellent": 70, "good": 55, "average": 40},
-    },
-}
-
-
 def get_benchmark(industry: Optional[Industry] = None, metric: Optional[str] = None) -> Dict:
     """
     获取行业基准值
@@ -425,15 +380,4 @@ def get_benchmark(industry: Optional[Industry] = None, metric: Optional[str] = N
     Returns:
         基准值字典
     """
-    if industry and industry in BENCHMARKS:
-        benchmarks = BENCHMARKS[industry].copy()
-        # 合并默认值
-        for key, value in BENCHMARKS["default"].items():
-            if key not in benchmarks:
-                benchmarks[key] = value
-    else:
-        benchmarks = BENCHMARKS["default"]
-    
-    if metric:
-        return benchmarks.get(metric, {})
-    return benchmarks
+    return get_industry_benchmark(industry, metric)

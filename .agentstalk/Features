@@ -1,100 +1,94 @@
 # Finance Toolkit 功能基线
 
-## 版本: v0.1 (开发中)
+## 版本: v0.2 (开发中)
+
+---
+
+## 项目结构
+
+```
+finance-toolkit/
+├── pyproject.toml              # 项目配置
+├── requirements.txt            # 生产依赖
+├── requirements-dev.txt        # 开发依赖
+├── config.yaml                 # 默认配置
+├── src/finance_toolkit/        # 主包
+│   ├── __init__.py
+│   ├── __version__.py          # 版本信息
+│   ├── config.py               # 配置管理
+│   ├── logger.py               # 日志系统
+│   ├── exceptions.py           # 自定义异常
+│   ├── models.py               # 数据模型
+│   ├── cli.py                  # 命令行工具
+│   ├── analyzer/               # 分析模块
+│   │   ├── __init__.py
+│   │   ├── company.py          # 公司分析主入口
+│   │   ├── metrics.py          # 财务指标计算
+│   │   ├── dupont.py           # 杜邦分析
+│   │   ├── valuation.py        # 估值模型
+│   │   └── trend.py            # 趋势分析
+│   ├── data/                   # 数据模块
+│   │   ├── __init__.py
+│   │   ├── db.py               # 数据库管理
+│   │   ├── importer.py         # 数据导入
+│   │   └── akshare.py          # AKShare 接口
+│   ├── industry/               # 行业模块
+│   │   ├── __init__.py
+│   │   ├── classification.py   # 行业分类
+│   │   └── chain.py            # 产业链
+│   └── report/                 # 报告模块
+│       ├── __init__.py
+│       └── generator.py        # 报告生成
+├── tests/                      # 测试
+└── scripts/finance/            # 旧结构 (待删除)
+```
 
 ---
 
 ## 已实现功能
 
-### 1. 数据模型 (models.py)
-- [x] StockInfo - 股票基本信息
-- [x] CompanyProfile - 公司档案
-- [x] FinancialMetrics - 财务指标
-- [x] Industry/SubIndustry 枚举
-- [x] BENCHMARKS 参考值
+### 1. 基础设施
+- [x] 配置管理 (config.py) - YAML/JSON 支持
+- [x] 日志系统 (logger.py) - 分级日志
+- [x] 异常处理 (exceptions.py) - 自定义异常类
+- [x] 类型完整的模型 (models.py)
 
-### 2. 公司分析 (company_analyzer.py)
-- [x] create_profile - 创建公司档案
-- [x] get_profile - 获取公司档案
-- [x] update_market_data - 更新市场数据
-- [x] add_financial_statement - 添加财务报表
-- [x] get_financial_summary - 获取财务摘要
-- [x] list_all_companies - 列出所有公司
-- [x] generate_report - 生成分析报告
+### 2. 数据模块
+- [x] CompanyDB - JSON 文件存储
+- [x] DataImporter - CSV/Excel 导入
+- [x] AKShareProvider - 实时数据获取
 
-### 3. 财务指标计算 (analyzers/financial_metrics.py)
-- [x] FinancialStatement - 财务报表数据结构
-- [x] 盈利能力指标: gross_margin, net_margin, roe, roa, roic
-- [x] 成长能力: revenue_growth_yoy, profit_growth_yoy
-- [x] 偿债能力: debt_to_asset, current_ratio, quick_ratio
-- [x] 运营效率: inventory_turnover, receivable_turnover, asset_turnover
-- [x] 现金流: operating_cash_flow, free_cash_flow
-- [x] MetricsCalculator - 指标计算器
-- [x] PeerComparator - 同业对比
+### 3. 分析模块
+- [x] MetricsCalculator - 财务指标计算
+- [x] DupontAnalyzer - 杜邦分析
+- [x] TrendAnalyzer - 趋势分析
+- [x] DCFValuation - DCF 估值
+- [x] RelativeValuation - 相对估值
 
-### 4. 行业分类 (industry.py)
-- [x] Industry 枚举 - 申万/中信标准一级行业
-- [x] IndustryChain - 产业链定义
+### 4. 行业模块
+- [x] Industry 枚举 - 申万/中信标准
 - [x] IndustryDB - 行业数据库
-- [x] 预定义产业链: 新能源汽车、白酒、半导体
+- [x] IndustryChain - 产业链定义
+- [x] 分行业标准基准
 
-### 5. 数据存储 (storage/company_db.py)
-- [x] CompanyDB - 公司数据库管理器
-- [x] save_profile / load_profile - 档案存取
-- [x] save_metrics / load_metrics - 指标存取
-- [x] list_companies - 列出公司
-- [x] get_summary - 获取摘要
-- [x] delete_company - 删除公司
-
-### 6. 数据获取接口 (data_provider.py) - AKShare
-- [x] AKShareProvider - AKShare 数据提供者
-- [x] DataProvider - 统一数据接口
-- [x] get_stock_info - 股票基本信息
-- [x] get_market_data - 实时市场数据
-- [x] get_financial_statement - 财务报表
-- [x] get_historical_prices - 历史价格
-- [x] search_stocks - 股票搜索
+### 5. 用户界面
+- [x] CLI 工具 (click)
+- [x] ReportGenerator - Markdown 报告
+- [x] 便捷函数
 
 ---
 
-## 技术特性
+## 待实现 (v0.3)
 
-### 支持的交易所
-- SH (上海证券交易所)
-- SZ (深圳证券交易所)
-- BJ (北京证券交易所)
-
-### 财务指标评估标准
-| 指标 | 优秀 | 良好 | 一般 |
-|------|------|------|------|
-| ROE | ≥20% | ≥15% | ≥10% |
-| 毛利率 | ≥40% | ≥30% | ≥20% |
-| 净利率 | ≥20% | ≥10% | ≥5% |
-| 资产负债率 | ≤50% | ≤70% | ≤80% |
-| 流动比率 | ≥2.0 | ≥1.5 | ≥1.0 |
+- [ ] 图表生成 (matplotlib)
+- [ ] PDF 报告导出
+- [ ] 更多数据源接口
+- [ ] Web 界面
 
 ---
 
-## 基线验证结果 (2026-03-28 18:35)
+## 基线验证
 
-- [x] `python -m compileall .` 通过
-- [x] `python demo.py` 运行成功
-- [x] 导入路径已统一为 `scripts.finance.*`
-- [x] 数据存储路径可通过 `FINANCE_DATA_ROOT` 配置
-
----
-
-## 待实现 (v0.2)
-
-- [ ] 图表生成
-- [ ] 批量分析
-- [ ] 报告导出 PDF
-- [ ] 估值模型 (DCF/DDM)
-
----
-
-## 架构说明
-
-项目同时维护两套结构：
-- `scripts/finance/` - 主开发路径
-- `src/finance_toolkit/` - 新包结构（规划中）
+- [x] `pip install -e .` 安装成功
+- [x] `python -m finance_toolkit --help` 正常
+- [x] 导入测试通过
