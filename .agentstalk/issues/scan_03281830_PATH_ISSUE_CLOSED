@@ -1,0 +1,39 @@
+# 扫描发现的问题 (已关闭)
+
+## 时间: 03281830
+## 关闭时间: 03281835
+## Issue ID: scan_03281830_PATH_ISSUE
+
+### 问题1: 导入路径不一致
+**严重程度**: 阻塞 / 高
+**状态**: ✅ 已修复
+
+**修复方案**:
+- 将项目结构调整为 `scripts/finance/` 包结构
+- 文件移动: `models.py`, `company_analyzer.py`, `industry.py` → `scripts/finance/`
+- 目录移动: `analyzers/`, `storage/` → `scripts/finance/`
+
+**验证结果**:
+- `python demo.py` 运行成功
+- 贵州茅台档案创建和查询功能正常
+
+---
+
+### 问题2: Industry 重复定义
+**严重程度**: 中
+**状态**: ✅ 已修复
+
+**修复方案**:
+- 移除 models.py 中的 Industry 和 SubIndustry 定义
+- 从 industry.py 统一导入 Industry
+- 添加 `Industry.from_cn_name()` 类方法用于从中文名查找
+- 在 industry.py 中添加 SubIndustry 类
+
+**验证结果**:
+- `python -m compileall scripts/finance/` 编译通过
+- demo.py 运行正常
+
+---
+
+### 提交记录
+- Commit: `61f7ff2` - fix: 修复导入路径和Industry重复定义问题
