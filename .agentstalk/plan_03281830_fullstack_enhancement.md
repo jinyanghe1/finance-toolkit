@@ -13,6 +13,12 @@
 > - 已发现并发开发文件，当前整合时避免重复开发这些区域：`src/finance_toolkit/analyzer/{company,metrics,trend,dupont,valuation}.py`、`src/finance_toolkit/industry/{classification,chain}.py`、`src/finance_toolkit/report/generator.py`、`tests/{conftest.py,test_models.py}`。
 > - 当前优先级：在不重复实现上述模块的前提下，做接口打通、编译修复、验证补齐和基线同步。
 
+> 批量分析更新: 2026-03-28 10:58
+>
+> - 当前分支/远端已同步，准备在此基础上开发批量分析功能。
+> - 图表功能由 `progress_03281910_CHARTS_KIMI.md` 跟进，批量分析避免修改 `report/charts.py` 或图表示例。
+> - 批量分析优先落在 `src/finance_toolkit/analyzer/company.py` 与 `src/finance_toolkit/cli.py`，并补充 tests/examples。
+
 ---
 
 ## 执行阶段
@@ -40,13 +46,14 @@
 
 ### Phase 3: 核心功能增强 ⏳
 **时间**: Day 2 (6h)  
-**状态**: 待开始
+**状态**: 已启动
 
 - [ ] 3.1 实现 CSV/Excel 数据导入器 (pandas)
 - [ ] 3.2 建立行业基准数据库 (JSON 格式)
 - [ ] 3.3 实现杜邦分析模型 (ROE 分解)
 - [ ] 3.4 添加趋势分析 (同比/环比计算)
 - [ ] 3.5 添加财务健康评分系统
+- [ ] 3.6 实现批量分析多家公司（API + CLI + 示例）
 
 ### Phase 4: 估值模型 ⏳
 **时间**: Day 3 上午 (4h)  
@@ -197,5 +204,5 @@ jupyter>=1.0.0
 
 ---
 
-**最后更新**: 2026-03-28 10:41  
-**更新说明**: 完成 CLI/配置修复，整合并发 `src` 代码，打通行业定义与 analyzer 导出，pytest 当前 16 项通过
+**最后更新**: 2026-03-28 10:58  
+**更新说明**: 已切换到批量分析阶段，明确与图表功能并行开发边界，下一步实现 API/CLI/tests/examples
