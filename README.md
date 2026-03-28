@@ -18,6 +18,64 @@
 
 ---
 
+## MCP 部署
+
+本项目可作为本地 MCP (Model Context Protocol) 服务器运行，供 Claude Code 等工具调用。
+
+### Claude Code 配置
+
+在 `~/.claude/settings.json` 中添加：
+
+```json
+{
+  "mcpServers": {
+    "finance-toolkit": {
+      "command": "python",
+      "args": ["-m", "finance_toolkit.mcp_server"],
+      "env": {
+        "PYTHONPATH": "/path/to/finance-toolkit/src"
+      }
+    }
+  }
+}
+```
+
+### Claude Desktop 配置
+
+在 `~/.claude/resources/mcp_servers.json` 中添加：
+
+```json
+{
+  "finance-toolkit": {
+    "command": "python",
+    "args": ["-m", "finance_toolkit.mcp_server"],
+    "env": {
+      "PYTHONPATH": "/absolute/path/to/finance-toolkit/src"
+    }
+  }
+}
+```
+
+### MCP 工具
+
+配置好后，Agent 可使用以下工具：
+
+| 工具 | 说明 |
+|------|------|
+| `search_stocks` | 搜索 A 股公司 |
+| `get_company_profile` | 获取公司档案 |
+| `get_financial_summary` | 财务摘要 |
+| `generate_report` | 生成 Markdown 报告 |
+| `analyze_batch` | 批量分析 |
+
+### 验证 MCP 连接
+
+```bash
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | python -m finance_toolkit.mcp_server
+```
+
+---
+
 ## 专为AI Agents设计
 
 本工具包特别适合AI Agents进行金融数据分析任务：
