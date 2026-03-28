@@ -6,24 +6,23 @@
 ### 问题: 存储层缺少校验，且存在字段回读缺口
 **严重程度**: 中
 **文件**:
-- models.py:120-144
-- company_analyzer.py:72-76
-- storage/company_db.py:47-58
-- storage/company_db.py:86-120
+- scripts/finance/models.py:111-136
+- scripts/finance/company_analyzer.py:65-82
+- scripts/finance/storage/company_db.py:47-58
+- scripts/finance/storage/company_db.py:86-120
 
 **描述**:
-- `CompanyProfile.from_dict()` 对输入结构和枚举值缺少保护
-- `update_market_data()` 使用 `setattr()` 写入任意同名字段，缺少类型/范围校验
-- `load_profile()` / `load_metrics()` 对 JSON 结构默认信任
-- `FinancialMetrics.roic` 已定义，但 `load_metrics()` 未将其从 JSON 读回
+- legacy `scripts/finance` 路径下的 `CompanyProfile.from_dict()` 仍对输入结构和枚举值缺少保护
+- legacy `scripts.finance.company_analyzer.update_market_data()` 仍使用 `setattr()` 写入任意同名字段，缺少类型/范围校验
+- legacy `scripts.finance.storage.company_db` 仍默认信任 JSON 结构
+- `ROIC` 读回缺口已在当前代码中补齐，因此该子项不再是开放问题
 
 **影响**:
 - 异常或脏数据容易在加载时抛错
 - 数值字段可能被写入错误类型
-- `ROIC` 等字段存在“写得出、读不回”的语义缺口
+- legacy 路径与新 `src` 路径之间的可靠性表现不一致
 
 **建议修复**:
-- 为反序列化和更新入口增加最小校验
-- 补齐 `ROIC` 的读回映射
+- 为 legacy `scripts/finance` 的反序列化和更新入口增加最小校验
+- 将 legacy 存储逻辑继续向 `src/finance_toolkit/data/db.py` 的实现靠拢
 - 视并发需求引入更稳健的写入策略
-

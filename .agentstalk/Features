@@ -1,6 +1,6 @@
 # Finance Toolkit 功能基线
 
-## 版本: v0.2 (开发中)
+## 版本: v0.2 (已发布)
 
 ---
 
@@ -12,6 +12,8 @@ finance-toolkit/
 ├── requirements.txt            # 生产依赖
 ├── requirements-dev.txt        # 开发依赖
 ├── config.yaml                 # 默认配置
+├── README.md                   # 主文档
+├── AGENTS.md                   # AI Agent 开发者指南 ⭐ NEW
 ├── src/finance_toolkit/        # 主包
 │   ├── __init__.py
 │   ├── __version__.py          # 版本信息
@@ -21,25 +23,24 @@ finance-toolkit/
 │   ├── models.py               # 数据模型
 │   ├── cli.py                  # 命令行工具
 │   ├── analyzer/               # 分析模块
-│   │   ├── __init__.py
 │   │   ├── company.py          # 公司分析主入口
 │   │   ├── metrics.py          # 财务指标计算
 │   │   ├── dupont.py           # 杜邦分析
 │   │   ├── valuation.py        # 估值模型
 │   │   └── trend.py            # 趋势分析
 │   ├── data/                   # 数据模块
-│   │   ├── __init__.py
 │   │   ├── db.py               # 数据库管理
 │   │   ├── importer.py         # 数据导入
 │   │   └── akshare.py          # AKShare 接口
 │   ├── industry/               # 行业模块
-│   │   ├── __init__.py
 │   │   ├── classification.py   # 行业分类
 │   │   └── chain.py            # 产业链
 │   └── report/                 # 报告模块
-│       ├── __init__.py
 │       └── generator.py        # 报告生成
 ├── tests/                      # 测试
+├── examples/                   # 示例代码 ⭐ NEW
+│   ├── basic_usage.py          # 基础使用示例
+│   └── agent_workflow.py       # Agent 工作流示例
 └── scripts/finance/            # 旧结构 (待删除)
 ```
 
@@ -76,6 +77,12 @@ finance-toolkit/
 - [x] ReportGenerator - Markdown 报告
 - [x] 便捷函数
 
+### 6. 文档与示例 ⭐ NEW
+- [x] README.md - 主文档 (含 Agent 使用指南)
+- [x] AGENTS.md - AI Agent 开发者指南
+- [x] examples/basic_usage.py - 基础示例
+- [x] examples/agent_workflow.py - Agent 工作流
+
 ---
 
 ## 待实现 (v0.3)
@@ -92,3 +99,22 @@ finance-toolkit/
 - [x] `pip install -e .` 安装成功
 - [x] `python -m finance_toolkit --help` 正常
 - [x] 导入测试通过
+- [x] CLI 命令测试通过
+- [x] 文档完整性检查
+
+---
+
+## 多 Agent 协作
+
+本项目使用 `.agentstalk/` 进行多 Agent 协作：
+
+- `Features` - 功能基线 (本文档)
+- `plan_*.md` - 开发计划
+- `progress_*.md` - 进度同步
+- `issues/` - 问题跟踪
+
+参见 `AGENTS.md` 了解如何参与开发。
+
+---
+
+**最后更新**: 2026-03-28 19:00

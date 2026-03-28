@@ -2,7 +2,7 @@
 
 ## 时间: 03281041
 ## Agent: main-agent
-## 状态: OPEN
+## 状态: CLOSED
 
 ### 当前目标
 - 整合并发产生的 `src/finance_toolkit` 与 `tests/` 变更
@@ -15,9 +15,9 @@
 - `python -m finance_toolkit --help` 正常
 - `demo.py` 正常
 
-### 待整合区域
-- `src/finance_toolkit/analyzer/*.py`
-- `src/finance_toolkit/industry/*.py`
-- `src/finance_toolkit/report/generator.py`
-- `tests/conftest.py`
-- `tests/test_models.py`
+### 整合结果
+- `src/finance_toolkit/models.py` 已统一到 `industry.classification` 的 `Industry`
+- `src/finance_toolkit/analyzer/__init__.py` 已补全 `CompanyAnalyzer` 导出
+- `src/finance_toolkit/analyzer/dupont.py` 已修正 `FinancialStatement` 导入
+- `src/finance_toolkit/report/generator.py` 语法错误已修复
+- 当前 `pytest -q` 通过（16 tests）

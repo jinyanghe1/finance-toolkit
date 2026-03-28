@@ -21,3 +21,8 @@
 - 统一 `Industry` 单一来源
 - 若需要轻量枚举与富元数据，明确建立映射关系而不是重复定义
 
+---
+
+### 修复状态: CLOSED
+- 2026-03-28 10:41 `src/finance_toolkit/models.py` 已统一复用 `industry.classification` 的 `Industry`
+- 行业基准查询已改为走单一来源，避免 models / industry 冲突

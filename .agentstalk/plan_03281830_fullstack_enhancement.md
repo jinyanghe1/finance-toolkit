@@ -189,7 +189,7 @@ jupyter>=1.0.0
 
 ## 验收标准
 
-- [ ] `pip install -e .` 可正常安装
+- [x] `pip install -e .` 可正常安装
 - [ ] `pytest` 全部通过，覆盖率 >80%
 - [ ] `mypy src/` 无类型错误
 - [x] `python -m finance_toolkit --help` 正常显示
@@ -198,4 +198,4 @@ jupyter>=1.0.0
 ---
 
 **最后更新**: 2026-03-28 10:41  
-**更新说明**: 记录并发开发区域，完成 CLI 入口修复，进入整合验证阶段
+**更新说明**: 完成 CLI/配置修复，整合并发 `src` 代码，打通行业定义与 analyzer 导出，pytest 当前 16 项通过
