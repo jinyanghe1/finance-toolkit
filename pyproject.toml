@@ -46,6 +46,9 @@ dev = [
     "jupyter>=1.0.0",
     "ipython>=8.0.0",
 ]
+pdf = [
+    "fpdf2>=2.7.0",
+]
 
 [project.scripts]
 ftk = "finance_toolkit.cli:main"

@@ -75,6 +75,7 @@ finance-toolkit/
 ### 5. 用户界面
 - [x] CLI 工具 (click)
 - [x] ReportGenerator - Markdown 报告
+- [x] PDFReportGenerator - PDF 报告导出 ⭐ NEW
 - [x] 便捷函数
 
 ### 6. 文档与示例 ⭐ NEW
@@ -88,7 +89,6 @@ finance-toolkit/
 ## 待实现 (v0.3)
 
 - [ ] 图表生成 (matplotlib)
-- [ ] PDF 报告导出
 - [ ] 更多数据源接口
 - [ ] Web 界面
 

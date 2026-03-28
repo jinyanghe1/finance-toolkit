@@ -1,0 +1,35 @@
+# PDF 报告导出功能开发
+
+## 时间: 03282000
+## Agent: main-pdf-dev
+## 状态: CLOSED
+
+## 任务
+开发 PDF 报告导出功能
+
+## 完成内容
+
+### 实现
+- [x] 创建 PDF 导出模块 `report/pdf_generator.py`
+- [x] `PDFReportGenerator` 类
+- [x] `markdown_to_pdf()` 便捷函数
+- [x] `markdown_file_to_pdf()` 文件转换函数
+- [x] 支持 Markdown 标题、表格、粗体文本
+- [x] 更新 `report/__init__.py` 导出
+- [x] 添加 fpdf2 到 optional-dependencies
+
+### 技术细节
+- 使用 fpdf2 库（纯 Python）
+- 自动 page break
+- 表格绘制支持
+- 字体支持（中文字体路径需系统配置）
+
+### 待测试
+- 安装 fpdf2 后实际生成 PDF
+- 中文字体渲染
+- 复杂表格布局
+
+---
+
+## 提交
+- Commit: 待推送
